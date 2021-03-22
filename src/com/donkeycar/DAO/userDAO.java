@@ -29,16 +29,14 @@ public class userDAO {
 		try {
 			Class.forName(JDBC_DRIVER); // µù¥UJDBC Driver¦bDriver Management¤º
 			conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-//			Context context = new InitialContext();
-//			DataSource ds = (DataSource) context.lookup("java:/comp/env/jdbc/servdb");
-//			conn = ds.getConnection();
 
 		} catch (SQLException e) {
+			System.out.println("SQLException   :"+e);
 			e.printStackTrace();
 		} catch (Exception e) {
+			System.out.println("Exception   :"+e);
 			e.printStackTrace();
 		}
-
 		return conn;
 	}
 // µù¥U
@@ -69,12 +67,12 @@ public class userDAO {
     }
 // µn¤J
 	public User validate(User user) throws ClassNotFoundException {
-		//boolean status = false;
 		User userN = null;
-		try (Connection conn = getConnection();
-				// Step 2:Create a statement using connection object
-				PreparedStatement pstmt = conn.prepareStatement(LOGIN_USERS_SQL);) {
-			
+		try {
+			Connection conn = getConnection();
+			if (conn==null)return null;
+			System.out.println("CONNN:   "+conn);
+			PreparedStatement pstmt = conn.prepareStatement(LOGIN_USERS_SQL);
 			pstmt.setString(1, user.getUseraccount());
 			pstmt.setString(2, user.getPassword());
 			
@@ -90,9 +88,12 @@ public class userDAO {
 			
 		}catch (SQLException e) {
             // process sql exception
+			System.out.println("CATCHEROR");
             printSQLException(e);
         }
-		
+		finally {
+	         if(userN==null) userN=null;
+	        }
 		return userN;
 	}
 	

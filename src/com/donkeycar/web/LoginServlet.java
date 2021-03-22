@@ -37,10 +37,10 @@ public class LoginServlet extends HttpServlet {
         //System.out.println(password);
       //make user object
         User userModel = new User(userAccount, password);
-        
+        System.out.println("MODEL"+userModel.getUseraccount());
+        System.out.println("useeeee"+userModel);
         try {
         	User listUser = userDAO.validate(userModel);
-        	//System.out.println(listUser.getUseraccount());
         	// listUser若為null 表示沒有此使用者
         	if(listUser==null) {
         		flag=true;
@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
         	}else {
         		request.setAttribute("user", listUser);
         	}
-        	// System.out.println("@@@@@@@@@@@@@@@@@@******");
+
         	System.out.println(listUser.getAddress());
         	
         } catch (Exception e) {
